@@ -4,22 +4,20 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
-public record getTopico(
+public record getTopicoPorUsuario(
         String titulo,
         String mensaje,
         @JsonFormat(pattern = "dd/MMM/yyyy HH:mm")
         LocalDateTime fechaDeCreacion,
-        String usuario,
         Curso curso
 
-        ) {
-    public getTopico(Topico topico) {
+) {
+    public getTopicoPorUsuario(Topico topico) {
         this(
                 topico.getTitulo(),
                 topico.getMensaje(),
                 topico.getFechaDeCreacion(),
-                topico.getUsuario().getNombre(),
                 topico.getCurso()
-                );
+        );
     }
 }

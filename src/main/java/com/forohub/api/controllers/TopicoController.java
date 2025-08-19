@@ -43,14 +43,31 @@ public class TopicoController {
 
     }
 
-    //OBTENER TODOS LOS TOPICOS
-    /*
+    //OBTENER TODOS LOS TOPICOS POR TITULO
     @GetMapping
     public ResponseEntity<Page<getTopico>> listar(@PageableDefault(size = 10, sort = {"titulo"}) Pageable paginacion){
-        var page = topicoRepository.findAllByActivoTrue(paginacion).map(getTopico::new);
+        var page = topicoRepository.findAllByStatusTrue(paginacion).map(getTopico::new);
         return ResponseEntity.ok(page);
-
     }
+
+    //OBTENER TODOS LOS TOPICOS POR FECHA DE CREACION
+    @GetMapping("/fechaDeCreacion")
+    public ResponseEntity<Page<getTopico>>listarPorFecha(@PageableDefault(size = 10, sort = {"fechaDeCreacion"}) Pageable paginacionPorFecha){
+        var page = topicoRepository.findAllByStatusTrue(paginacionPorFecha).map(getTopico::new);
+        return ResponseEntity.ok(page);
+    }
+
+    //OBTENER TODOS LOS TOPICOS DE UN USUARIO
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity <Page<getTopicoPorUsuario>> listarPorUsuario(
+            @PathVariable Long id,
+            @PageableDefault(size = 10, sort = {"fechaDeCreacion"})
+            Pageable paginacionPorUsuario){
+        var page = topicoRepository.findAllByUsuarioId(id, paginacionPorUsuario).map(getTopicoPorUsuario::new);
+        return ResponseEntity.ok(page);
+    }
+
+
     //OBTENER UN SOLO TOPICO
     @GetMapping("/{id}")
     public ResponseEntity detalle(@PathVariable Long id){
@@ -59,5 +76,37 @@ public class TopicoController {
         return ResponseEntity.ok(new DatosDetalleTopico(topico));
     }
 
-     */
+    //ACTUALIZAR UN TOPICO
+    @Transactional
+    @PutMapping
+    public ResponseEntity actualizar(@RequestBody @Valid putTopico datos){
+        if (!topicoRepository.existsById(datos.id())){
+            return ResponseEntity.badRequest().body("El topico que se pretende actualizar no existe");
+        }
+        var topico = topicoRepository.getReferenceById(datos.id());
+        topico.actualizarTopico(datos);
+        return ResponseEntity.ok(new DatosDetalleTopico(topico));
+    }
+
+    //ELIMINAR UN TOPICO POR EXCLUSION LOGICA
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity eliminar(@PathVariable Long id){
+        var topico = topicoRepository.getReferenceById(id);
+        topico.actualizarStatus(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    //ELIMINAR UN TOPICO POR EXCLUSION FISICA
+    @Transactional
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity eliminarDeBD(@PathVariable Long id){
+        if(!topicoRepository.existsById(id)){
+            return ResponseEntity.badRequest().body("El topico que se pretende elimnar no existe");
+        }
+        topicoRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

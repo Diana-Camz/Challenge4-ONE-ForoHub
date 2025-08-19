@@ -42,7 +42,19 @@ public class Topico {
        this.usuario = usuario;
    }
 
+    public void actualizarTopico(@Valid putTopico datos){
+       if(datos.titulo() != null){
+           this.titulo = datos.titulo();
+       }
 
+       if(datos.mensaje() != null){
+           this.mensaje = datos.mensaje();
+       }
+
+       if(datos.curso() != null){
+           this.curso = datos.curso();
+       }
+    }
 
     public void actualizarStatus(Long id) {
         this.status = false;
