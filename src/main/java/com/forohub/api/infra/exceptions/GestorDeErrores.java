@@ -1,6 +1,9 @@
 package com.forohub.api.infra.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.UnexpectedTypeException;
+import org.apache.coyote.Response;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -11,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 @RestControllerAdvice
 public class GestorDeErrores {
@@ -46,6 +50,13 @@ public class GestorDeErrores {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acceso denegado");
     }
 */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity campoDuplicado(DataIntegrityViolationException ex){
+        String mensaje = "Error: campo duplicado";
+        return ResponseEntity.badRequest().body(mensaje);
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity gestionarError500(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " +ex.getLocalizedMessage());

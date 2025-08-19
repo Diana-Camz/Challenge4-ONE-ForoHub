@@ -33,13 +33,16 @@ public class Topico {
     @Enumerated(EnumType.STRING)
     private Curso curso;
 
-   public Topico(DatosRegistroTopico topico){
+   public Topico(DatosRegistroTopico topico, Usuario usuario){
        this.titulo = topico.titulo();
        this.mensaje = topico.mensaje();
        this.fechaDeCreacion = LocalDateTime.now();
        this.status = true;
        this.curso = topico.curso();
+       this.usuario = usuario;
    }
+
+
 
     public void actualizarStatus(Long id) {
         this.status = false;

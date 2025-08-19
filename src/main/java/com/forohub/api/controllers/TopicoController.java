@@ -3,6 +3,7 @@ package com.forohub.api.controllers;
 
 import com.forohub.api.domain.Topico.*;
 import com.forohub.api.domain.Usuario.Usuario;
+import com.forohub.api.domain.Usuario.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/topicos")
 public class TopicoController {
@@ -20,16 +23,24 @@ public class TopicoController {
     @Autowired
     TopicoRepository topicoRepository;
 
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
 
     @Transactional
     @PostMapping
     //CREAR UN NUEVO TOPICO
     public ResponseEntity registroTopico(@RequestBody @Valid DatosRegistroTopico datos, UriComponentsBuilder uriComponentBuilder){
-
-        var topico = new Topico(datos);
+        var usuarioExiste = usuarioRepository.findById(datos.usuarioId());
+        if (usuarioExiste.isEmpty()){
+            return ResponseEntity.badRequest().body("El usuario no existe");
+        }
+        var usuario = usuarioExiste.get();
+        var topico = new Topico(datos, usuario);
         topicoRepository.save(topico);
         var uri = uriComponentBuilder.path("topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new DatosDetalleTopico(topico));
+
     }
 
     //OBTENER TODOS LOS TOPICOS
