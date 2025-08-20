@@ -1,13 +1,10 @@
 package com.forohub.api.domain.Topico;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.forohub.api.domain.Usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +26,8 @@ public class Topico {
     private boolean status;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
+    @JsonIgnore
+    @ToString.Exclude
     private Usuario usuario;
     @Enumerated(EnumType.STRING)
     private Curso curso;

@@ -2,7 +2,6 @@ package com.forohub.api.controllers;
 
 
 import com.forohub.api.domain.Topico.*;
-import com.forohub.api.domain.Usuario.Usuario;
 import com.forohub.api.domain.Usuario.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

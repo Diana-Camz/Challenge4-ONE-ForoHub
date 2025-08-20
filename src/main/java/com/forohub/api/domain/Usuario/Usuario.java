@@ -1,16 +1,15 @@
 package com.forohub.api.domain.Usuario;
 
-import com.forohub.api.domain.Topico.Curso;
-import com.forohub.api.domain.Topico.DatosRegistroTopico;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.forohub.api.domain.Topico.Topico;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Table(name = "usuarios")
@@ -19,7 +18,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario {
+
+@lombok.ToString(onlyExplicitlyIncluded = true)
+public class Usuario implements UserDetails {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
@@ -28,7 +29,9 @@ public class Usuario {
         private String email;
         private String contrasena;
         private boolean activo;
-        @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+        @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @JsonIgnore
+        @ToString.Exclude
         private List<Topico> topicos = new ArrayList<>();
 
         public Usuario(DatosRegistroUsuario usuario){
@@ -37,7 +40,51 @@ public class Usuario {
             this.activo = true;
         }
 
-        public void eliminar(Long id) {
+    public Usuario(String email, String contrasena){
+        this.email = email;
+        this.contrasena = contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public void eliminar(Long id) {
         this.activo = false;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return contrasena;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.activo;
     }
 }
