@@ -1,4 +1,5 @@
 # Challenge ONE
+## Foro Hub
 **FORO-HUB** es una API REST desarrollada con **Spring Boot** que permite la creación y gestión de usuarios y tópicos. A través de autenticación con JWT, los usuarios pueden interactuar con el foro realizando operaciones como crear, actualizar y eliminar tópicos, así como consultar información específica.
 
 ## Funcionalidades principales
