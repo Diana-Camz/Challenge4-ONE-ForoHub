@@ -4,8 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.forohub.api.domain.Usuario.Usuario;
-import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -14,17 +13,19 @@ import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
+    private final Algorithm algorithm;
+    private final String issuer;
 
-    Dotenv dotenv = Dotenv.load();
+    public TokenService(@Value("${jwt.firma}") String firma, @Value("${jwt.issuer}") String issuer){
+        this.algorithm = Algorithm.HMAC256(firma);
+        this.issuer = issuer;
+    };
 
     public String generarToken(String email){
-        System.setProperty("JWT_FIRMA", dotenv.get("JWT_FIRMA"));
-        System.setProperty("JWT_ISSUER", dotenv.get("JWT_ISSUER"));
 
         try {
-            Algorithm algorithm = Algorithm.HMAC256("{JWT_FIRMA}");
             String token = JWT.create()
-                    .withIssuer("{JWT_ISSUER}")
+                    .withIssuer(issuer)
                     .withSubject(email)
                     .withExpiresAt(fechaExpiracion())
                     .sign(algorithm);
@@ -41,9 +42,8 @@ public class TokenService {
 
     public String getSubject(String tokenJWT){
         try {
-            Algorithm algorithm = Algorithm.HMAC256("{JWT_FIRMA}");
             return  JWT.require(algorithm)
-                    .withIssuer("{JWT_ISSUER}")
+                    .withIssuer(issuer)
                     .build()
                     .verify(tokenJWT)
                     .getSubject();
