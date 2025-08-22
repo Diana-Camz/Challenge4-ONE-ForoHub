@@ -18,9 +18,14 @@
     - Tópico específico por ID
 - Actualizar campos (`PUT /topicos`): `titulo`, `mensaje` y `curso` (requiere ID en el cuerpo)
 - Eliminar tópicos:
-    - Lógicamente, cambiando el estado `status` a `false` (simula que fue resuelto)
-    - Físicamente, eliminándolo completamente de la base de datos
+    - Lógicamente, cambiando el estado `status` a `false` (simula que fue resuelto) _(USER y ADMIN)_
+    - Físicamente, eliminándolo completamente de la base de datos _(solo ADMIN)_
 
+
+> **Notas**
+> - Un `USER` puede realizar los siguientes metodos: **POST / GET / PUT** sobre tópicos propios y **eliminar por exclusión lógica**.
+> - Un `ADMIN` puede **eliminar físicamente** tópicos desde el endpoint `/topico/eliminar/{id}`.
+> - un `ADMIN` tambien puede **eliminar logicamente** usuarios, modificandoles el `status` a `false` desde el endpoint `/usuario/eliminar/{id}`.
 ## Autenticación con JWT
 
 Una vez logueado, se obtiene un token JWT que debe incluirse en Postman u otras herramientas en el header:
@@ -47,26 +52,16 @@ La estructura del proyecto se divide en carpetas organizadas por entidades (por 
 - **Dotenv**
 - **Lombok**
 
-## Dependencias utilizadas
+## Respuestas esperadas (referencial)
 
-- spring-boot-starter-web
-- spring-boot-devtools
-- lombok
-- spring-boot-starter-data-jpa
-- spring-boot-starter-validation
-- flyway-core
-- flyway-mysql
-- mysql-connector-j
-- java-dotenv
-- spring-boot-starter-security
-- spring-security-test
-- java-jwt
-- spring-boot-starter-test
+- `200 OK` / `204 No Content`: operación exitosa (consultas, actualizaciones, borrados lógicos/físicos)
+- `201 Created`: creación de recursos
+- `400 Bad Request`: datos inválidos
+- `401 Unauthorized`: token ausente o inválido
+- `403 Forbidden`: rol insuficiente para el endpoint (p. ej., `USER` intentando borrado físico)
+- `404 Not Found`: recurso inexistente o ya eliminado físicamente
 
-## Autora
-
-Desarrollado por **Diana Campos** como parte del programa **Oracle Next Education (ONE)**.
-# Imagenes del proyecto:
+## Imagenes del proyecto:
 
 ## Usuario
 | Creando un Usuario |
@@ -88,8 +83,8 @@ Desarrollado por **Diana Campos** como parte del programa **Oracle Next Educatio
 |-------------------------------------------------------|
 | ![creando_topico.png](assets/creando_topico.png) |
 
-| Obteniendo topico un topico por id             |
-|------------------------------------------------|
+| Obteniendo un topico por id             |
+|-----------------------------------------------|
 | ![topico_id.png](assets/topico_id.png) |
 
 | Obteniendo todos los topicos                          |
@@ -105,8 +100,8 @@ Desarrollado por **Diana Campos** como parte del programa **Oracle Next Educatio
 |![topicos_fecha.png](assets/topicos_fecha.png)  |
 
 
-| Actualizanto un Topico                         |
-|------------------------------------------------|
+| Actualizando un Topico                                     |
+|------------------------------------------------------------|
 | ![actualizando_topico.png](assets/actualizando_topico.png) |
 
 
@@ -119,28 +114,6 @@ Desarrollado por **Diana Campos** como parte del programa **Oracle Next Educatio
 |-----------------------------------------------|
 | ![delete_fisica_topico.png](assets/delete_fisica_topico.png) |
 
-## Manejo de Respuestas del Servidor
+## Autora
 
-| 201 CREATED                                                  |
-|--------------------------------------------------------------|
-| ![creacion_usuario.png](assets/creacion_usuario.png) |
-
-
-| 403 FORBIDDEN                                       |
-|-----------------------------------------------------|
-| ![acceso_denegado.png](assets/acceso_denegado.png) |
-
-
-| 404 NOT FOUND                                        |
-|------------------------------------------------------|
-| ![not_found.png](assets/not_found.png) |
-
-
-| 204 NO CONTENT                                               |
-|--------------------------------------------------------------|
-| ![delete_fisica_topico.png](assets/delete_fisica_topico.png) |
-
-
-| 400 BAD REQUEST                            |
-|--------------------------------------------|
-| ![bad_request.png](assets/bad_request.png) |
+Desarrollado por **Diana Campos** como parte del programa **Oracle Next Education (ONE)**.
