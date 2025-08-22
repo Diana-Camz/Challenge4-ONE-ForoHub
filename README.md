@@ -52,6 +52,23 @@ La estructura del proyecto se divide en carpetas organizadas por entidades (por 
 - **Dotenv**
 - **Lombok**
 
+##  Documentación con Swagger
+
+La API está documentada con **Swagger (OpenAPI 3)**, lo que permite explorar y probar los endpoints desde una interfaz gráfica.
+
+## Acceso rápido
+- **Swagger UI**: `http://localhost:8080/docs`
+- **Especificación JSON**: `http://localhost:8080/api-docs`
+- **Especificación YAML**: `http://localhost:8080/api-docs.yaml`
+
+## Seguridad en Swagger
+Los endpoints protegidos requieren autenticación con **Bearer Token (JWT)**.  
+Para probarlos en Swagger UI:
+1. Inicia sesión con `POST /login` y copia el token.
+2. Haz clic en el botón **Authorize** en Swagger UI.
+3. Ingresa el token (ejemplo: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`).
+4. Ejecuta las peticiones autenticadas desde la interfaz.
+
 ## Respuestas esperadas (referencial)
 
 - `200 OK` / `204 No Content`: operación exitosa (consultas, actualizaciones, borrados lógicos/físicos)
@@ -63,56 +80,19 @@ La estructura del proyecto se divide en carpetas organizadas por entidades (por 
 
 ## Imagenes del proyecto:
 
-## Usuario
-| Creando un Usuario |
-|--------------------|
-| ![creacion_usuario.png](assets/creacion_usuario.png)]|
-
-| Token devuelto al hacer Login                         |
+| Pruebas con Postman                                   |
 |-------------------------------------------------------|
-| ![login.png](assets/login.png)                        |
+|  ![postman.png](assets/postman.png)|
 
 
-| Eliminando Usuario por exclusion logica  |
-|------------------------------------------|
-|   ![delete_usuario.png](assets/delete_usuario.png)        |
-
-## Topicos
-
-| Creando un Topico                                     |
-|-------------------------------------------------------|
-| ![creando_topico.png](assets/creando_topico.png) |
-
-| Obteniendo un topico por id             |
-|-----------------------------------------------|
-| ![topico_id.png](assets/topico_id.png) |
-
-| Obteniendo todos los topicos                          |
-|-------------------------------------------------------|
-|![topicos_todos.png](assets/topicos_todos.png) |
-
-| Obteniendo topicos por usuario                        |
-|-------------------------------------------------------|
-| ![topicos_usuario.png](assets/topicos_usuario.png) |
-
-| Obteniendo topicos por fecha de elaboracion           |
-|-------------------------------------------------------|
-|![topicos_fecha.png](assets/topicos_fecha.png)  |
+| Documentacion con Swagger                                    |
+|--------------------------------------------------------------|
+| ![swagger.png](assets/swagger.png) |
 
 
-| Actualizando un Topico                                     |
-|------------------------------------------------------------|
-| ![actualizando_topico.png](assets/actualizando_topico.png) |
-
-
-| Eliminando topico por exclusion logica         |
-|------------------------------------------------|
-| ![delete_logica_topico.png](assets/delete_logica_topico.png) |
-
-
-| Eliminando topico por exclusion fisica        |
-|-----------------------------------------------|
-| ![delete_fisica_topico.png](assets/delete_fisica_topico.png) |
+| Agregando token JWT con Swagger                              |
+|--------------------------------------------------------------|
+| ![jwt_swagger.png](assets/jwt_swagger.png) |
 
 ## Autora
 
