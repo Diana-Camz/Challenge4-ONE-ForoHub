@@ -60,6 +60,7 @@ public class SecurityConfig {
                     req.requestMatchers(HttpMethod.POST, "/usuarios").permitAll();
                     req.requestMatchers(HttpMethod.DELETE, "/usuarios/eliminar/").hasRole("ADMIN");
                     req.requestMatchers(HttpMethod.DELETE, "/topicos/eliminar/").hasRole("ADMIN");
+                    req.requestMatchers("/api-docs/**", "/swagger-ui/**", "/docs").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .authenticationProvider(provider)
