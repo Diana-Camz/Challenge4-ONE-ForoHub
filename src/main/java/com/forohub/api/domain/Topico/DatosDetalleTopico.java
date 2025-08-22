@@ -9,21 +9,25 @@ public record DatosDetalleTopico(
     Long id,
     String titulo,
     String mensaje,
+    Curso curso,
+    String autor,
     @JsonFormat(pattern = "dd/MMM/yyyy HH:mm")
     LocalDateTime fechaDeCreacion,
-    boolean status,
-    String autor,
-    Curso curso
+    boolean status
+
+
 ) {
     public DatosDetalleTopico(Topico topico){
         this(
                 topico.getId(),
                 topico.getTitulo(),
                 topico.getMensaje(),
-                topico.getFechaDeCreacion(),
-                topico.isStatus(),
+                topico.getCurso(),
                 topico.getUsuario().getNombre(),
-                topico.getCurso()
+                topico.getFechaDeCreacion(),
+                topico.isStatus()
+
+
         );
     }
 }

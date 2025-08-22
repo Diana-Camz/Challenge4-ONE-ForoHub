@@ -4,8 +4,8 @@ public record DatosDetalleUsuario(Long id, String email, String nombre) {
     public DatosDetalleUsuario(Usuario usuario){
         this(
                 usuario.getId(),
-                usuario.getEmail(),
-                usuario.getNombre()
+                usuario.getNombre(),
+                usuario.getEmail()
         );
     }
 }

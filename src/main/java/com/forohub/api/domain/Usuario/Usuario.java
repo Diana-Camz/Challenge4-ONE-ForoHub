@@ -28,6 +28,8 @@ public class Usuario implements UserDetails {
         @Column(unique = true)
         private String email;
         private String contrasena;
+        @Enumerated(EnumType.STRING)
+        private Rol rol;
         private boolean activo;
         @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JsonIgnore
@@ -38,6 +40,7 @@ public class Usuario implements UserDetails {
             this.nombre = usuario.nombre();
             this.email = usuario.email();
             this.activo = true;
+            this.rol = usuario.rol();
         }
 
     public Usuario(String email, String contrasena){
@@ -55,7 +58,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(rol.name()));
     }
 
     @Override
